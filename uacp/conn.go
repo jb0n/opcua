@@ -346,10 +346,14 @@ func (c *Conn) Receive() ([]byte, error) {
 	// TODO(kung-foo): sync.Pool
 	b := make([]byte, c.ack.ReceiveBufSize)
 
-	if _, err := io.ReadFull(c, b[:hdrlen]); err != nil {
+	n, err := c.Read(b[:hdrlen])
+	if err != nil {
 		// todo(fs): do not wrap this error since it hides io.EOF
 		// todo(fs): use golang.org/x/xerrors
 		return nil, err
+	}
+	if n != hdrlen {
+		return nil, fmt.Errorf("short read on header. expected %d bytes, but only read %d", hdrlen, n)
 	}
 
 	var h Header
@@ -361,10 +365,14 @@ func (c *Conn) Receive() ([]byte, error) {
 		return nil, errors.Errorf("uacp: message too large: %d > %d bytes", h.MessageSize, c.ack.ReceiveBufSize)
 	}
 
-	if _, err := io.ReadFull(c, b[hdrlen:h.MessageSize]); err != nil {
+	n, err = c.Read(b[hdrlen:h.MessageSize])
+	if err != nil {
 		// todo(fs): do not wrap this error since it hides io.EOF
 		// todo(fs): use golang.org/x/xerrors
 		return nil, err
+	}
+	if uint32(n) != h.MessageSize-hdrlen {
+		return nil, fmt.Errorf("short read on message. expected %d bytes, but only read %d", h.MessageSize-hdrlen, n)
 	}
 
 	debug.Printf("uacp %d: recv %s%c with %d bytes", c.id, h.MessageType, h.ChunkType, h.MessageSize)
