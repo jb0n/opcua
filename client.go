@@ -247,14 +247,6 @@ func (c *Client) Connect(ctx context.Context) (err error) {
 	return nil
 }
 
-func (c *Client) SetReadDeadline(t time.Time) error {
-	return c.conn.SetReadDeadline(t)
-}
-
-func (c *Client) SetWriteDeadline(t time.Time) error {
-	return c.conn.SetWriteDeadline(t)
-}
-
 // monitor manages connection alteration
 func (c *Client) monitor(ctx context.Context) {
 	dlog := debug.NewPrefixLogger("client: monitor: ")

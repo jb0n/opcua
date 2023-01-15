@@ -11,6 +11,7 @@ import (
 	"net"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/gopcua/opcua/debug"
 	"github.com/gopcua/opcua/errors"
@@ -63,6 +64,8 @@ type Dialer struct {
 	// ClientACK defines the connection parameters requested by the client.
 	// Defaults to DefaultClientACK.
 	ClientACK *Acknowledge
+
+	ReadTimeout *time.Duration
 }
 
 func (d *Dialer) Dial(ctx context.Context, endpoint string) (*Conn, error) {
@@ -87,6 +90,7 @@ func (d *Dialer) Dial(ctx context.Context, endpoint string) (*Conn, error) {
 		c.Close()
 		return nil, err
 	}
+	conn.readTimeout = d.ReadTimeout
 
 	debug.Printf("uacp %d: start HEL/ACK handshake", conn.id)
 	if err := conn.Handshake(endpoint); err != nil {
@@ -173,7 +177,8 @@ type Conn struct {
 	id  uint32
 	ack *Acknowledge
 
-	closeOnce sync.Once
+	closeOnce   sync.Once
+	readTimeout *time.Duration
 }
 
 func NewConn(c *net.TCPConn, ack *Acknowledge) (*Conn, error) {
@@ -345,6 +350,11 @@ func (c *Conn) Receive() ([]byte, error) {
 	// TODO(kung-foo): allow user-specified buffer
 	// TODO(kung-foo): sync.Pool
 	b := make([]byte, c.ack.ReceiveBufSize)
+	if c.readTimeout != nil {
+		if err := c.SetReadDeadline(time.Now().Add(*c.readTimeout)); err != nil {
+			return nil, fmt.Errorf("failed to set read timeout on connection. err=%w", err)
+		}
+	}
 
 	n, err := c.Read(b[:hdrlen])
 	if err != nil {
