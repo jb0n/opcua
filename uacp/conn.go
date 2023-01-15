@@ -65,6 +65,7 @@ type Dialer struct {
 	// Defaults to DefaultClientACK.
 	ClientACK *Acknowledge
 
+	// ReadTimeout sets a read timeout on a socket if it's defined.
 	ReadTimeout *time.Duration
 }
 
