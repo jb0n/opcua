@@ -9,8 +9,8 @@ import (
 	"crypto/x509"
 	"encoding/binary"
 
-	"github.com/gopcua/opcua/ua"
-	"github.com/gopcua/opcua/uapolicy"
+	"github.com/jb0n/opcua/ua"
+	"github.com/jb0n/opcua/uapolicy"
 )
 
 // NewSessionSignature issues a new signature for the client to send on the next ActivateSessionRequest

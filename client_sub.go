@@ -6,11 +6,11 @@ import (
 	"log"
 	"time"
 
-	"github.com/gopcua/opcua/debug"
-	"github.com/gopcua/opcua/errors"
-	"github.com/gopcua/opcua/stats"
-	"github.com/gopcua/opcua/ua"
-	"github.com/gopcua/opcua/uasc"
+	"github.com/jb0n/opcua/debug"
+	"github.com/jb0n/opcua/errors"
+	"github.com/jb0n/opcua/stats"
+	"github.com/jb0n/opcua/ua"
+	"github.com/jb0n/opcua/uasc"
 )
 
 // Subscribe creates a Subscription with given parameters.
@@ -278,7 +278,7 @@ func (c *Client) notifySubscription(ctx context.Context, sub *Subscription, noti
 	// todo(fs): The client sent the list of ids in the *previous* PublishRequest.
 	// todo(fs): If we want to handle them then we probably need to keep track
 	// todo(fs): of the message ids we have ack'ed.
-	// todo(fs): see discussion in https://github.com/gopcua/opcua/issues/337
+	// todo(fs): see discussion in https://github.com/jb0n/opcua/issues/337
 
 	if notif == nil {
 		sub.notify(ctx, &PublishNotificationData{

@@ -6,12 +6,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gopcua/opcua/debug"
-	"github.com/gopcua/opcua/errors"
-	"github.com/gopcua/opcua/id"
-	"github.com/gopcua/opcua/stats"
-	"github.com/gopcua/opcua/ua"
-	"github.com/gopcua/opcua/uasc"
+	"github.com/jb0n/opcua/debug"
+	"github.com/jb0n/opcua/errors"
+	"github.com/jb0n/opcua/id"
+	"github.com/jb0n/opcua/stats"
+	"github.com/jb0n/opcua/ua"
+	"github.com/jb0n/opcua/uasc"
 )
 
 const (

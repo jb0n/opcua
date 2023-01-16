@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gopcua/opcua/errors"
-	"github.com/gopcua/opcua/id"
-	"github.com/gopcua/opcua/ua"
-	"github.com/gopcua/opcua/uapolicy"
+	"github.com/jb0n/opcua/errors"
+	"github.com/jb0n/opcua/id"
+	"github.com/jb0n/opcua/ua"
+	"github.com/jb0n/opcua/uapolicy"
 )
 
 type instanceState int
@@ -91,7 +91,7 @@ func (c *channelInstance) newMessage(srv interface{}, typeID uint16, requestID u
 		// Do not send the thumbprint for security mode None
 		// even if we have a certificate.
 		//
-		// See https://github.com/gopcua/opcua/issues/259
+		// See https://github.com/jb0n/opcua/issues/259
 		thumbprint := c.sc.cfg.Thumbprint
 		if c.sc.cfg.SecurityMode == ua.MessageSecurityModeNone {
 			thumbprint = nil

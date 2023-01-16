@@ -1,4 +1,4 @@
-module github.com/gopcua/opcua
+module github.com/jb0n/opcua
 
 go 1.19
 
